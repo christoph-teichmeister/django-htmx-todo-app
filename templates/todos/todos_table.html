@@ -1,0 +1,54 @@
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/todos/todos_table.css' %}"/>
+{% endblock %}
+
+<div class="row" id="todos-table">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Done?</th>
+            <th scope="col" width="30"></th>
+            <th scope="col" width="30" class="float-right">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ task.name | capfirst | truncatechars:10 }}</td>
+                <td>{{ task.created_at | date:"H:i d.m.Y"}}</td>
+                <td>{{ task.done |yesno:"Yes,No,Maybe" }}</td>
+                <td>
+                    {% if not task.done %}
+                        <img alt='mark-as-done-icon'
+                             hx-trigger="click"
+                             hx-put='{% url 'todos' %}'
+                             hx-vals='{"id": "{{ task.id }}", "done": "True"}'
+                             hx-swap='outerHTML'
+                             hx-target='#tasks'
+                             width="30" height="30"
+                             style="cursor: pointer; float: right !important;"
+                             src="{% static 'img/checkmark-icon.png' %}"/>
+                    {% endif %}
+                </td>
+                <td>
+                    <img alt='delete-icon'
+                         hx-trigger="click"
+                         hx-delete='{% url 'todos' %}'
+                         hx-vals='{"id": "{{ task.id }}"}'
+                         hx-swap='outerHTML'
+                         hx-target='#tasks'
+                         width="30" height="30"
+                         style="cursor: pointer; float: left !important;"
+                         src="{% static 'img/delete-icon.png' %}"/>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

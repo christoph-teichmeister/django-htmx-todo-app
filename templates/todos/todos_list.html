@@ -1,0 +1,16 @@
+<div id='tasks'>
+    <div class="row d-flex justify-content-center">
+        <div class="row">
+            <h1 class="text-center">Your tasks</h1>
+        </div>
+
+        {% if tasks %}
+            {% include 'todos/todos_table.html' %}
+        {% else%}
+            <h5 class="text-center" style="color: darkred">No items on your list yet</h5>
+        {% endif %}
+
+        {% include 'todos/todos_add.html' %}
+
+    </div>
+</div>
